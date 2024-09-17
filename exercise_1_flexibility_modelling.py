@@ -53,11 +53,11 @@ def make_load_profile_ewh(time_steps,P,T,S,T_a,C,R,T_min,T_max,t_act,S_act):
         if (T <= T_min) & (S_prev == 0):
             # Turn EWH on if the temperature becomes too low
             S = 1
-            print(t)
+            #print(t)
         elif (T > T_max) & (S_prev == 1):
             # Turn EWH off if the temperature becomes too high
             S = 0
-            print(t)
+            #print(t)
         else:
             S = S_prev
 
@@ -103,17 +103,17 @@ P = 0
 
 # Time of flexibility activation (minutes from start time); 
 # set to None to disable flexibility activation
-t_act = 10
+t_act = 1000
 
 # EWH activation signal that sets the status of the EWHs after activating flexibility; 
 # 1 turns all EWHs on; 0 turns all EWHs off; set to None to disable flexibility activation
-S_act = 1
+S_act = 0
 
 # Number of time steps (minutes)
 time_steps = 24*60
 
 # Number of EWHs / hot water tanks to model
-N_EWH = 1
+N_EWH = 100
 
 if N_EWH == 1:
     # If modelling a single EWH, initialize temperature as specified above
@@ -154,7 +154,14 @@ for i_EWH in range(N_EWH):
 #%% Plot results for from Electric Water Heater model
 Consumption_pattern=[]
 for i in range(len(P_list)):
-    Consumption_pattern.append(P_list[i]-P_list_base[i])    
+    Consumption_pattern.append(P_list_base[i]-P_list[i]) 
+
+#%% Plot results for from Electric Water Heater model
+Consumption_pattern_multiple_EWH=[]
+for i in range(len(P_list)):
+    Consumption_pattern_multiple_EWH.append(P_list_base_all[i]-P_list_all[i]) 
+
+    
 
 if N_EWH == 1:
     # If running model for a single Electric Water Heater
@@ -179,7 +186,7 @@ if N_EWH == 1:
    # ax
     ax2.tick_params(axis='y', labelcolor=color2)
     fig.tight_layout()  # otherwise the right y-label is slightly clipped
-    plt.show()
+    
 
     fig3, ax3 = plt.subplots()
 
@@ -188,6 +195,7 @@ if N_EWH == 1:
     ax3.plot(Consumption_pattern, color=color)
     ax3.set_xlabel('minutes')
     ax3.set_ylabel('Consumption pattern (kW)', color=color)
+    ax3.set_title("Base load minus flexibility load")
     ax3.tick_params(axis='y', labelcolor=color)
     plt.show()
 
@@ -204,4 +212,13 @@ elif N_EWH > 1:
     h_P, = ax1.plot(P_list_all, color=color1)
     if (t_act != None) & (S_act != None):
         ax1.legend([h_P_base,h_P], ['without flex.','with flex.'], loc = 'upper left')
+    
+    # Plot Consumption Pattern: difference between without flex and with flex
+    fig3, ax3 = plt.subplots()
+    color = 'tab:green'
+    ax3.plot(Consumption_pattern_multiple_EWH, color=color)
+    ax3.set_xlabel('minutes')
+    ax3.set_ylabel('Difference between original load and load with flexibility (kW)', color=color)
+    ax3.set_title("Base load minus flexibility load")
+    ax3.tick_params(axis='y', labelcolor=color)
     plt.show()

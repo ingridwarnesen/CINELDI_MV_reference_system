@@ -103,7 +103,7 @@ P = 0
 
 # Time of flexibility activation (minutes from start time); 
 # set to None to disable flexibility activation
-t_act = 1000
+t_act = 500
 
 # EWH activation signal that sets the status of the EWHs after activating flexibility; 
 # 1 turns all EWHs on; 0 turns all EWHs off; set to None to disable flexibility activation
@@ -212,13 +212,14 @@ elif N_EWH > 1:
     h_P, = ax1.plot(P_list_all, color=color1)
     if (t_act != None) & (S_act != None):
         ax1.legend([h_P_base,h_P], ['without flex.','with flex.'], loc = 'upper left')
-    
+    ax1.set_title(f"Flexibility activated at t_act = {t_act}")
+
     # Plot Consumption Pattern: difference between without flex and with flex
     fig3, ax3 = plt.subplots()
     color = 'tab:green'
     ax3.plot(Consumption_pattern_multiple_EWH, color=color)
     ax3.set_xlabel('minutes')
     ax3.set_ylabel('Difference between original load and load with flexibility (kW)', color=color)
-    ax3.set_title("Base load minus flexibility load")
+    ax3.set_title(f"Base load minus flexibility load with t_act = {t_act}")
     ax3.tick_params(axis='y', labelcolor=color)
     plt.show()

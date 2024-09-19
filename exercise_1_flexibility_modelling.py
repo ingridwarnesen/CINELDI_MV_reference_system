@@ -103,11 +103,11 @@ P = 0
 
 # Time of flexibility activation (minutes from start time); 
 # set to None to disable flexibility activation
-t_act = 10
+t_act = 780
 
 # EWH activation signal that sets the status of the EWHs after activating flexibility; 
 # 1 turns all EWHs on; 0 turns all EWHs off; set to None to disable flexibility activation
-S_act = 1
+S_act = 0
 
 # Number of time steps (minutes)
 time_steps = 24*60
@@ -154,7 +154,7 @@ for i_EWH in range(N_EWH):
 #%% Plot results for from Electric Water Heater model
 Consumption_pattern=[]
 for i in range(len(P_list)):
-    Consumption_pattern.append(P_list[i]-P_list_base[i])    
+    Consumption_pattern.append(P_list_base[i]-P_list[i])    
 
 if N_EWH == 1:
     # If running model for a single Electric Water Heater

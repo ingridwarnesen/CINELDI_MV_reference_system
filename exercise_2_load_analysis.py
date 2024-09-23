@@ -149,7 +149,6 @@ pp_plotting.pf_res_plotly(net)
 load_time_series_with_new_load = load_time_series_mapped.copy()
 load_time_series_with_new_load[bus_i_subset[0]] += new_load_time_series #her legges den nye load times serien (0.4 MW) med forbruksdate til bus 90 
 
-
 # Calculate the aggregated load demand for the area
 aggregated_load_demand_with_new_load = load_time_series_with_new_load[bus_i_subset].sum(axis=1)
 
@@ -179,3 +178,31 @@ plt.show()
 # # #code for plotting
 # # pp_plotting.pf_res_plotly(net)
 
+### Task 13 ###
+pp.runpp(net,init='results',algorithm='bfsw')
+timeseries_constantmax=[0.4]*8760
+load_time_series_with_newConstant_load = load_time_series_mapped.copy()
+load_time_series_with_newConstant_load[bus_i_subset[0]] += timeseries_constantmax
+
+# Calculate the aggregated load demand for the area
+aggregated_load_demand_with_newConstant_load = load_time_series_with_newConstant_load[bus_i_subset].sum(axis=1)
+
+# Calculate the load duration curve
+load_duration_curve = aggregated_load_demand_with_newConstant_load.sort_values(ascending=False).reset_index(drop=True)
+
+# Find the intersection point
+#intersection_index = (load_duration_curve > P_lim).sum()
+
+# Plot the load duration curve
+plt.figure(figsize=(12, 6))
+plt.plot(load_duration_curve, label='Load Duration Curve')
+plt.axhline(y=0.637, color='g', linestyle='--', label='Power Capacity (0.637 MW)')
+#plt.scatter(intersection_index, P_lim, color='r', zorder=5)
+#plt.text(intersection_index, 0, f'{intersection_index} hours', color='r', ha='center', va='bottom')
+#plt.axvline(x=intersection_index, color='g', linestyle='--', label=f'Intersection at {intersection_index} hours')
+plt.xlabel('Hours')
+plt.ylabel('Load Demand (MW)')
+plt.title('Load Duration Curve for Grid Area (bus 90, 91, 92, 96) with constant load time series (0.4MW) added to bus 90')
+plt.legend()
+plt.grid(True)
+plt.show()

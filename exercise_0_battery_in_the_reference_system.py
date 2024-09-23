@@ -26,9 +26,9 @@ import math
 # Location of (processed) data set for CINELDI MV reference system
 # (to be replaced by your own local data folder)
 #path_data_set         = 'C:/Users/ivespe/Data_sets/CINELDI_MV_reference_system/'
-path_data_set = "/Users/ingridwiig/Documents/NTNU/5. klasse/Modul3/CINELDI_MV_reference_system_v_2023-03-06/"
+#path_data_set = "/Users/ingridwiig/Documents/NTNU/5. klasse/Modul3/CINELDI_MV_reference_system_v_2023-03-06/"
 #path_data_set = "/Users/andreamarie/Documents/Blokk 3 - fordypningsemne fleksibilitet /Oving 0/CINELDI_MV_reference_system_v_2023-03-06/"
-#path_data_set = "C:/Users/haral/Fordypningsemne_modul3/CINELDI_MV_reference_system_v_2023-03-06/"
+path_data_set = "C:/Users/haral/CINELDI_MV_reference_system_v_2023-03-06/"
 
 filename_residential_fullpath = os.path.join(path_data_set,'time_series_IDs_primarily_residential.csv')
 filename_irregular_fullpath = os.path.join(path_data_set,'time_series_IDs_irregular.csv')      
@@ -43,7 +43,7 @@ p_mw = 1
 pf = 0.95
 q_mvar = p_mw * math.tan(math.acos(pf))
 
-pp.create_load(net, 95, p_mw, q_mvar, const_z_percent=0, const_i_percent=0)
+#pp.create_load(net, 95, p_mw, q_mvar, const_z_percent=0, const_i_percent=0)
 # %% Test running power flow with a peak load model
 # (i.e., all loads are assumed to be at their annual peak load simultaneously)
 

@@ -27,8 +27,7 @@ import numpy as np
 
 # Location of (processed) data set for CINELDI MV reference system
 # (to be replaced by your own local data folder)
-#path_data_set         = 'C:/Users/ivespe/Data_sets/CINELDI_MV_reference_system/'
-path_data_set = "/Users/ingridwiig/Documents/NTNU/5. klasse/Modul3/CINELDI_MV_reference_system_v_2023-03-06/"
+path_data_set         = '/Users/andreamarie/Documents/Blokk 3 - fordypningsemne fleksibilitet /Oving 0/CINELDI_MV_reference_system_v_2023-03-06/'
 
 filename_load_data_fullpath = os.path.join(path_data_set,'load_data_CINELDI_MV_reference_system.csv')
 filename_load_mapping_fullpath = os.path.join(path_data_set,'mapping_loads_to_CINELDI_MV_reference_grid.csv')
@@ -70,6 +69,23 @@ new_load_time_series = new_load_profiles[i_time_series_new_load]*P_max_new #Scal
 # (1-indexed) and the row index is the hour of the year (0-indexed)
 load_time_series_mapped = profiles_mapped.mul(net.load['p_mw'])
 # %%
+
+# Task 3
+# Extracting dataframe containing bus 90, 91, 92, 96
+load_dataframe_subset = load_time_series_mapped[bus_i_subset]
+# Calculating aggregated values along axis = 1 (row values)
+aggregated_values = load_dataframe_subset.sum(axis=1)
+
+plt.plot(aggregated_values, label = "Aggregated load")
+plt.axhline(y=P_lim, color='green', linestyle='--', label='Power flow limit (0.637 MW)')
+plt.xlabel("Hour")
+plt.ylabel("Load demand (MW)")
+plt.title("Aggregated load demand for bus 90, 91, 92 and 96")
+plt.legend()
+plt.show()
+
+pp.runpp(net,init='results',algorithm='bfsw')
+pp_plotting.pf_res_plotly(net)
 ##task 8 plot --------
 # Add new load to the existing load time series
 load_time_series_with_new_load = load_time_series_mapped.copy()

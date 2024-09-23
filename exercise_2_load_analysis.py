@@ -131,6 +131,10 @@ pp_plotting.pf_res_plotly(net)
 # Task 3
 # Extracting dataframe containing bus 90, 91, 92, 96
 load_dataframe_subset = load_time_series_mapped[bus_i_subset]
+listOfMaxes1=[]
+for i in bus_i_subset:
+    listOfMaxes1.append(load_dataframe_subset[i].max())
+
 # Calculating aggregated values along axis = 1 (row values)
 aggregated_values = load_dataframe_subset.sum(axis=1)
 
@@ -144,19 +148,19 @@ plt.show()
 
 # Task 4
 # Find maximum value of P 
-max_P_value = aggregated_values.max()
+max_P_value1 = aggregated_values.max()
 
 # Task 5 
 # Finding the load duration curve
 
-load_duration_curve = aggregated_values.sort_values(ascending=False).reset_index(drop=True)
+load_duration_curve1 = aggregated_values.sort_values(ascending=False).reset_index(drop=True)
 
 # Find the intersection point
 #intersection_index = (load_duration_curve > P_lim).sum()
 
 # Plot the load duration curve
 plt.figure(figsize=(12, 6))
-plt.plot(load_duration_curve, label='Load Duration Curve')
+plt.plot(load_duration_curve1, label='Load Duration Curve')
 #plt.axhline(y=P_lim, color='g', linestyle='--', label='Power Capacity (0.637 MW)')
 #plt.scatter(intersection_index, P_lim, color='r', zorder=5)
 #plt.text(intersection_index, 0, f'{intersection_index} hours', color='r', ha='center', va='bottom')
@@ -175,8 +179,8 @@ pp_plotting.pf_res_plotly(net)
 # Calculating the utilization time (T_u)
 # T_u = W/Pmax
 #Calculating W (annual_energy_demand)
-annual_energy_demand = np.trapz(load_duration_curve, dx=1)
-T_u = annual_energy_demand/max_P_value
+annual_energy_demand = np.trapz(load_duration_curve1, dx=1)
+T_u = annual_energy_demand/max_P_value1
 print(annual_energy_demand)
 print(T_u)
 
@@ -185,19 +189,21 @@ print(T_u)
 # Add new load to the existing load time series
 load_time_series_with_new_load = load_time_series_mapped.copy()
 load_time_series_with_new_load[bus_i_subset[0]] += new_load_time_series #her legges den nye load times serien (0.4 MW) med forbruksdate til bus 90 
-
+listOfMaxes2=[]
+for i in bus_i_subset:
+    listOfMaxes2.append(load_time_series_with_new_load[i].max())
 # Calculate the aggregated load demand for the area
 aggregated_load_demand_with_new_load = load_time_series_with_new_load[bus_i_subset].sum(axis=1)
 
 # Calculate the load duration curve
-load_duration_curve = aggregated_load_demand_with_new_load.sort_values(ascending=False).reset_index(drop=True)
+load_duration_curve2 = aggregated_load_demand_with_new_load.sort_values(ascending=False).reset_index(drop=True)
 
 # Find the intersection point
 #intersection_index = (load_duration_curve > P_lim).sum()
 
 # Plot the load duration curve
 plt.figure(figsize=(12, 6))
-plt.plot(load_duration_curve, label='Load Duration Curve')
+plt.plot(load_duration_curve2, label='Load Duration Curve')
 plt.axhline(y=0.637, color='g', linestyle='--', label='Power Capacity (0.637 MW)')
 #plt.scatter(intersection_index, P_lim, color='r', zorder=5)
 #plt.text(intersection_index, 0, f'{intersection_index} hours', color='r', ha='center', va='bottom')
@@ -223,16 +229,18 @@ load_time_series_with_newConstant_load[bus_i_subset[0]] += timeseries_constantma
 
 # Calculate the aggregated load demand for the area
 aggregated_load_demand_with_newConstant_load = load_time_series_with_newConstant_load[bus_i_subset].sum(axis=1)
-
+listOfMaxes3=[]
+for i in bus_i_subset:
+    listOfMaxes3.append(load_time_series_with_newConstant_load[i].max())
 # Calculate the load duration curve
-load_duration_curve = aggregated_load_demand_with_newConstant_load.sort_values(ascending=False).reset_index(drop=True)
+load_duration_curve3 = aggregated_load_demand_with_newConstant_load.sort_values(ascending=False).reset_index(drop=True)
 
 # Find the intersection point
 #intersection_index = (load_duration_curve > P_lim).sum()
 
 # Plot the load duration curve
 plt.figure(figsize=(12, 6))
-plt.plot(load_duration_curve, label='Load Duration Curve')
+plt.plot(load_duration_curve3, label='Load Duration Curve')
 plt.axhline(y=0.637, color='g', linestyle='--', label='Power Capacity (0.637 MW)')
 #plt.scatter(intersection_index, P_lim, color='r', zorder=5)
 #plt.text(intersection_index, 0, f'{intersection_index} hours', color='r', ha='center', va='bottom')
@@ -243,3 +251,30 @@ plt.title('Load Duration Curve for Grid Area (bus 90, 91, 92, 96) with constant 
 plt.legend()
 plt.grid(True)
 plt.show()
+
+###End of task 13###
+###Task 14###
+max_P_value1=aggregated_values.max()
+coincidence_factor=max_P_value1/sum(listOfMaxes1)
+max_P_value2=aggregated_load_demand_with_new_load.max()
+coincidence_factor2=max_P_value2/sum(listOfMaxes2)
+max_P_value3=aggregated_load_demand_with_newConstant_load.max()
+coincidence_factor3=max_P_value3/sum(listOfMaxes3)
+
+
+
+annual_energy_demand1 = np.trapz(load_duration_curve1, dx=1)
+T_u1 = annual_energy_demand1/max_P_value1
+#print(annual_energy_demand1)
+print(f'Utilization time case 1: {T_u1}, Coincidence factor case 1: {coincidence_factor}')
+
+annual_energy_demand2 = np.trapz(load_duration_curve2, dx=1)
+T_u2 = annual_energy_demand2/max_P_value2
+#print(annual_energy_demand2)
+print(f'Utilization time case 2: {T_u2}, Coincidence factor case 2: {coincidence_factor2}')
+
+annual_energy_demand3 = np.trapz(load_duration_curve3, dx=1)
+T_u3 = annual_energy_demand3/max_P_value3
+#print(annual_energy_demand3)
+print(f'Utilization time case 3: {T_u3}, Coincidence factor case 1: {coincidence_factor}') 
+

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Created on 2023-07-14
 
@@ -28,7 +27,7 @@ import numpy as np
 
 # Location of (processed) data set for CINELDI MV reference system
 # (to be replaced by your own local data folder)
-#path_data_set         = 'C:/Users/ivespe/Data_sets/CINELDI_MV_reference_system/'
+#path_data_set         = '/Users/andreamarie/Documents/Blokk 3 - fordypningsemne fleksibilitet /Oving 0/CINELDI_MV_reference_system_v_2023-03-06/'
 path_data_set = "C:/Users/haral/CINELDI_MV_reference_system_v_2023-03-06/"
 
 filename_load_data_fullpath = os.path.join(path_data_set,'load_data_CINELDI_MV_reference_system.csv')
@@ -111,9 +110,11 @@ profiles_mapped = load_profiles.map_rel_load_profiles(filename_load_mapping_full
 
 
 
-# Retrieve load time series for new load to be added to the area
+
+
+# Retrieve load time series for new load to be added to the area. this load profile is given from the costumer requesting 0.4 MW
 new_load_profiles = load_profiles.get_profile_days(repr_days)
-new_load_time_series = new_load_profiles[i_time_series_new_load]*P_max_new
+new_load_time_series = new_load_profiles[i_time_series_new_load]*P_max_new #Scales the load profile for the new load by its maximum load demand
 
 # Calculate load time series in units MW (or, equivalently, MWh/h) by scaling the normalized load time series by the
 # maximum load value for each of the load points in the grid data set (in units MW); the column index is the bus number
@@ -126,3 +127,55 @@ pp.runpp(net,init='results',algorithm='bfsw')
 print('Total load demand in the system assuming a peak load model: ' + str(net.res_load['p_mw'].sum()) + ' MW')
 # %% Plot results of power flow calculations
 pp_plotting.pf_res_plotly(net)
+
+# Task 3
+# Extracting dataframe containing bus 90, 91, 92, 96
+load_dataframe_subset = load_time_series_mapped[bus_i_subset]
+# Calculating aggregated values along axis = 1 (row values)
+aggregated_values = load_dataframe_subset.sum(axis=1)
+
+plt.plot(aggregated_values, label = "Aggregated load")
+plt.axhline(y=P_lim, color='green', linestyle='--', label='Power flow limit (0.637 MW)')
+plt.xlabel("Hour")
+plt.ylabel("Load demand (MW)")
+plt.title("Aggregated load demand for bus 90, 91, 92 and 96")
+plt.legend()
+plt.show()
+
+pp.runpp(net,init='results',algorithm='bfsw')
+pp_plotting.pf_res_plotly(net)
+##task 8 plot --------
+# Add new load to the existing load time series
+load_time_series_with_new_load = load_time_series_mapped.copy()
+load_time_series_with_new_load[bus_i_subset[0]] += new_load_time_series #her legges den nye load times serien (0.4 MW) med forbruksdate til bus 90 
+
+
+# Calculate the aggregated load demand for the area
+aggregated_load_demand_with_new_load = load_time_series_with_new_load[bus_i_subset].sum(axis=1)
+
+# Calculate the load duration curve
+load_duration_curve = aggregated_load_demand_with_new_load.sort_values(ascending=False).reset_index(drop=True)
+
+# Find the intersection point
+#intersection_index = (load_duration_curve > P_lim).sum()
+
+# Plot the load duration curve
+plt.figure(figsize=(12, 6))
+plt.plot(load_duration_curve, label='Load Duration Curve')
+plt.axhline(y=0.637, color='g', linestyle='--', label='Power Capacity (0.637 MW)')
+#plt.scatter(intersection_index, P_lim, color='r', zorder=5)
+#plt.text(intersection_index, 0, f'{intersection_index} hours', color='r', ha='center', va='bottom')
+#plt.axvline(x=intersection_index, color='g', linestyle='--', label=f'Intersection at {intersection_index} hours')
+plt.xlabel('Hours')
+plt.ylabel('Load Demand (MW)')
+plt.title('Load Duration Curve for Grid Area (bus 90, 91, 92, 96) with additional load time series added to bus 90')
+plt.legend()
+plt.grid(True)
+plt.show()
+
+### task 8 plot end--------------
+
+# # pp.runpp(net,init='results',algorithm='bfsw')
+# # #code for plotting
+# # pp_plotting.pf_res_plotly(net)
+

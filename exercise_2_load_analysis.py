@@ -142,8 +142,45 @@ plt.title("Aggregated load demand for bus 90, 91, 92 and 96")
 plt.legend()
 plt.show()
 
+# Task 4
+# Find maximum value of P 
+max_P_value = aggregated_values.max()
+
+# Task 5 
+# Finding the load duration curve
+
+load_duration_curve = aggregated_values.sort_values(ascending=False).reset_index(drop=True)
+
+# Find the intersection point
+#intersection_index = (load_duration_curve > P_lim).sum()
+
+# Plot the load duration curve
+plt.figure(figsize=(12, 6))
+plt.plot(load_duration_curve, label='Load Duration Curve')
+#plt.axhline(y=P_lim, color='g', linestyle='--', label='Power Capacity (0.637 MW)')
+#plt.scatter(intersection_index, P_lim, color='r', zorder=5)
+#plt.text(intersection_index, 0, f'{intersection_index} hours', color='r', ha='center', va='bottom')
+#plt.axvline(x=intersection_index, color='g', linestyle='--', label=f'Intersection at {intersection_index} hours')
+plt.xlabel('Hours')
+plt.ylabel('Load Demand (MW)')
+plt.title('Load Duration Curve for Grid Area (bus 90, 91, 92, 96)')
+plt.legend()
+plt.grid(True)
+plt.show()
+
 pp.runpp(net,init='results',algorithm='bfsw')
 pp_plotting.pf_res_plotly(net)
+
+# Task 6
+# Calculating the utilization time (T_u)
+# T_u = W/Pmax
+#Calculating W (annual_energy_demand)
+annual_energy_demand = np.trapz(load_duration_curve, dx=1)
+T_u = annual_energy_demand/max_P_value
+print(annual_energy_demand)
+print(T_u)
+
+
 ##task 8 plot --------
 # Add new load to the existing load time series
 load_time_series_with_new_load = load_time_series_mapped.copy()

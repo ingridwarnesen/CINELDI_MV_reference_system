@@ -184,6 +184,7 @@ T_u = annual_energy_demand/max_P_value1
 print(annual_energy_demand)
 print(T_u)
 
+# Task 7
 
 ##task 8 plot --------
 # Add new load to the existing load time series

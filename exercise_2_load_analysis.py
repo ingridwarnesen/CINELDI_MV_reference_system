@@ -276,5 +276,5 @@ print(f'Utilization time case 2: {T_u2}, Coincidence factor case 2: {coincidence
 annual_energy_demand3 = np.trapz(load_duration_curve3, dx=1)
 T_u3 = annual_energy_demand3/max_P_value3
 #print(annual_energy_demand3)
-print(f'Utilization time case 3: {T_u3}, Coincidence factor case 1: {coincidence_factor}') 
+print(f'Utilization time case 3: {T_u3}, Coincidence factor case 1: {coincidence_factor3}') 
 

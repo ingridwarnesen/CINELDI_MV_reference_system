@@ -156,7 +156,8 @@ max_P_value1 = aggregated_values.max()
 load_duration_curve1 = aggregated_values.sort_values(ascending=False).reset_index(drop=True)
 
 # Find the intersection point
-#intersection_index = (load_duration_curve > P_lim).sum()
+intersection_index = (load_duration_curve > P_lim).sum()
+
 
 # Plot the load duration curve
 plt.figure(figsize=(12, 6))
@@ -216,8 +217,20 @@ plt.legend()
 plt.grid(True)
 plt.show()
 
+
 ### task 8 plot end--------------
 
+###task 9: calculate max value of overloading
+# Calculate the overloading
+overloading = aggregated_load_demand_with_new_load - P_lim
+print(overloading)
+
+# # Find the maximum overloading value
+max_overloading = overloading.max()
+
+print(f"The maximum amount of overloading in the area after the new load is added is {max_overloading:.3f} MW.")
+
+### task 9 end
 # # pp.runpp(net,init='results',algorithm='bfsw')
 # # #code for plotting
 # # pp_plotting.pf_res_plotly(net)

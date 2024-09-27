@@ -43,7 +43,7 @@ p_mw = 1
 pf = 0.95
 q_mvar = p_mw * math.tan(math.acos(pf))
 
-#pp.create_load(net, 95, p_mw, q_mvar, const_z_percent=0, const_i_percent=0)
+pp.create_load(net, 95, p_mw, q_mvar, const_z_percent=0, const_i_percent=0)
 # %% Test running power flow with a peak load model
 # (i.e., all loads are assumed to be at their annual peak load simultaneously)
 

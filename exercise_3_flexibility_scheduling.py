@@ -98,6 +98,7 @@ p_charge = [en.value(model.p_charge[t]) for t in model.T]
 p_discharge = [en.value(model.p_discharge[t]) for t in model.T]
 
 # Combined plot for base load and PV generation
+plt.figure(figsize=(8, 6))  # Adjusted the width to 8 and height to 6
 plt.subplot(4, 1, 1)
 plt.plot(hours, base_load, label='Base Load', color='blue')
 plt.plot(hours, pv_production, label='PV Generation', color='orange')
@@ -125,14 +126,12 @@ plt.legend()
 plt.tight_layout()
 plt.show()
 
-
-#plotting base load and power from grid in one plot to answer task 4
-plt.figure(figsize=(12, 6))
+# Plotting base load and power from grid in one plot to answer task 4
+plt.figure(figsize=(8, 4))  # Adjusted the width to 8 and height to 4
 plt.plot(hours, base_load, label='Base Load', color='blue')
-plt.plot(hours, from_grid, label='From Grid', color = "red")
+plt.plot(hours, from_grid, label='From Grid', color='red')
 plt.xlabel('Hour')
 plt.ylabel('Power (kW)')
 plt.legend()
 plt.show()
-
 ### end of task 4

@@ -156,7 +156,7 @@ max_P_value1 = aggregated_values.max()
 load_duration_curve1 = aggregated_values.sort_values(ascending=False).reset_index(drop=True)
 
 # Find the intersection point
-intersection_index = (load_duration_curve > P_lim).sum()
+intersection_index = (load_duration_curve1 > P_lim).sum()
 
 
 # Plot the load duration curve

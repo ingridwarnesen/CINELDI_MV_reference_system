@@ -111,7 +111,7 @@ plt.ylabel('Power (kW)')
 plt.legend()
 
 plt.subplot(4, 1, 3)
-plt.plot(hours, soc, label='State of Charge (SOC)')
+plt.plot(hours, soc, label='State of Charge (SOC)', color='green')
 plt.ylabel('Energy (kWh)')
 plt.legend()
 
@@ -124,3 +124,15 @@ plt.legend()
 
 plt.tight_layout()
 plt.show()
+
+
+#plotting base load and power from grid in one plot to answer task 4
+plt.figure(figsize=(12, 6))
+plt.plot(hours, base_load, label='Base Load', color='blue')
+plt.plot(hours, from_grid, label='From Grid', color = "red")
+plt.xlabel('Hour')
+plt.ylabel('Power (kW)')
+plt.legend()
+plt.show()
+
+### end of task 4

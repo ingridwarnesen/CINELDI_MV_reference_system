@@ -7,7 +7,7 @@ import pyomo.environ as en
 import time
 
 # Read battery specification 
-parametersinput = pd.read_csv('./battery_data.csv', index_col=0)
+parametersinput = pd.read_csv('C:/Users/haral/Fordypningsemne_modul3/CINELDI_MV_reference_system/battery_data.csv', index_col=0)
 parameters = parametersinput.loc[1]
 
 # Battery Specification
@@ -16,9 +16,10 @@ charging_power_limit = parameters["Battery_Power"]
 discharging_power_limit = parameters["Battery_Power"]
 charging_efficiency = parameters["Battery_Charge_Efficiency"]
 discharging_efficiency = parameters["Battery_Discharge_Efficiency"]
+P_lim=6.1
 
 # Read load and PV profile data
-testData = pd.read_csv('./profile_input.csv')
+testData = pd.read_csv('C:/Users/haral/Fordypningsemne_modul3/CINELDI_MV_reference_system./profile_input.csv')
 
 # Convert the various timeseries/profiles to numpy arrays
 base_load = testData['Base_Load'].values
@@ -42,6 +43,7 @@ model.charging_power_limit = en.Param(initialize=charging_power_limit)
 model.discharging_power_limit = en.Param(initialize=discharging_power_limit)
 model.charging_efficiency = en.Param(initialize=charging_efficiency)
 model.discharging_efficiency = en.Param(initialize=discharging_efficiency)
+model.p_lim = en.Param(initialize = P_lim )
 
 # Define variables
 model.soc = en.Var(model.T, bounds=(0, capacity), initialize=0)  # State of charge
@@ -63,8 +65,10 @@ def soc_dynamics_rule(model, t):
     if t == 0:
         return model.soc[t] == 0
     else:
-        return model.soc[t] == model.soc[t-1] + model.charging_efficiency * model.p_charge[t] - model.p_discharge[t] / model.discharging_efficiency
+        return model.soc[t] == model.soc[t-1] + model.charging_efficiency * model.p_charge[t-1] - model.p_discharge[t-1] / model.discharging_efficiency
 model.soc_dynamics = en.Constraint(model.T, rule=soc_dynamics_rule)
+
+
 
 #state of charge is set to zero at
 def final_soc_rule(model):
@@ -81,8 +85,19 @@ def p_discharge_initial_rule(model):
     return model.p_discharge[0] == 0
 model.p_discharge_initial = en.Constraint(rule=p_discharge_initial_rule)
 
+#Ensure no discharge when SOC is zero
+def dicharging_SOC_rule(model, t):
+    return model.p_discharge[t] <= model.soc[t] * model.discharging_power_limit
+model.dicharging_soc = en.Constraint(model.T, rule=dicharging_SOC_rule)
+
+# New rule for Excercise 6
+
+def powerLimit_rule(model, t):
+    return model.from_grid[t] <= P_lim
+model.powerLimit = en.Constraint(model.T, rule=powerLimit_rule)
+
 # Solve the optimization problem
-solver = SolverFactory('glpk')
+solver = SolverFactory('gurobi')
 results = solver.solve(model, tee=True)
 
 # Print results
@@ -135,3 +150,13 @@ plt.ylabel('Power (kW)')
 plt.legend()
 plt.show()
 ### end of task 4
+
+plt.figure(figsize=(6,4))
+plt.plot(hours, p_charge, label='Charging Power')
+plt.plot(hours, p_discharge, label='Discharging Power')
+plt.plot(hours, soc, label = 'State of Charge')
+plt.xlabel('Hour')
+plt.ylabel('Power (kW)')
+plt.title("Charge/Discharge Power of Battery")
+plt.legend()
+plt.show()

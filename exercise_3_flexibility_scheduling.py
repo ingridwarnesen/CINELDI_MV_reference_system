@@ -7,7 +7,7 @@ import pyomo.environ as en
 import time
 
 # Read battery specification 
-parametersinput = pd.read_csv('C:/Users/haral/Fordypningsemne_modul3/CINELDI_MV_reference_system/battery_data.csv', index_col=0)
+parametersinput = pd.read_csv('./battery_data.csv', index_col=0)
 parameters = parametersinput.loc[1]
 
 # Battery Specification
@@ -19,7 +19,7 @@ discharging_efficiency = parameters["Battery_Discharge_Efficiency"]
 P_lim=6.1
 
 # Read load and PV profile data
-testData = pd.read_csv('C:/Users/haral/Fordypningsemne_modul3/CINELDI_MV_reference_system./profile_input.csv')
+testData = pd.read_csv('./profile_input.csv')
 
 # Convert the various timeseries/profiles to numpy arrays
 base_load = testData['Base_Load'].values
@@ -92,12 +92,12 @@ model.dicharging_soc = en.Constraint(model.T, rule=dicharging_SOC_rule)
 
 # New rule for Excercise 6
 
-def powerLimit_rule(model, t):
-    return model.from_grid[t] <= P_lim
-model.powerLimit = en.Constraint(model.T, rule=powerLimit_rule)
+# def powerLimit_rule(model, t):
+#     return model.from_grid[t] <= P_lim
+# model.powerLimit = en.Constraint(model.T, rule=powerLimit_rule)
 
 # Solve the optimization problem
-solver = SolverFactory('gurobi')
+solver = SolverFactory('glpk')
 results = solver.solve(model, tee=True)
 
 # Print results
@@ -141,22 +141,58 @@ plt.legend()
 plt.tight_layout()
 plt.show()
 
+##### task 3 #####
+#Plotting charge/discharge power schedule for the battery
+plt.figure(figsize=(8, 4))  # Adjusted the width to 8 and height to 4
+plt.plot(hours, p_charge, label='Charging Power', color='blue')
+plt.plot(hours, p_discharge, label='Discharging Power', color='red')
+plt.xlabel('Hour')
+plt.ylabel('Power (kW)')
+plt.title('Charge/Discharge Power Schedule')
+plt.legend()
+plt.show()
+
+#### end of task 3### 
 # Plotting base load and power from grid in one plot to answer task 4
 plt.figure(figsize=(8, 4))  # Adjusted the width to 8 and height to 4
 plt.plot(hours, base_load, label='Base Load', color='blue')
 plt.plot(hours, from_grid, label='From Grid', color='red')
+plt.axhline(y=0, color='black', linestyle='--') 
 plt.xlabel('Hour')
 plt.ylabel('Power (kW)')
 plt.legend()
 plt.show()
 ### end of task 4
 
-plt.figure(figsize=(6,4))
-plt.plot(hours, p_charge, label='Charging Power')
-plt.plot(hours, p_discharge, label='Discharging Power')
-plt.plot(hours, soc, label = 'State of Charge')
-plt.xlabel('Hour')
-plt.ylabel('Power (kW)')
-plt.title("Charge/Discharge Power of Battery")
-plt.legend()
+
+# Plotting base load, power from grid, and electricity price in one plot to answer task 5
+fig, ax1 = plt.subplots(figsize=(8, 4))  # Adjusted the width to 8 and height to 4
+ax1.plot(hours, base_load, label='Base Load', color='blue')
+ax1.plot(hours, from_grid, label='From Grid', color='red')
+ax1.axhline(y=0, color='black', linestyle='--')  # Add horizontal line at y = 0
+ax1.set_xlabel('Hour')
+ax1.set_ylabel('Power (kW)')
+ax1.legend(loc='upper right')  # Move legend to the right
+
+ax2 = ax1.twinx()
+ax2.plot(hours, buy_price, label='Electricity Price', color='green')
+ax2.set_ylabel('Price (NOK/kWh)')
+ax2.legend(loc='center right')  # Move legend to the right
+
+plt.title('Base Load, Power from Grid, and Electricity Price')
+plt.tight_layout()
+plt.show()
+
+# Combined plot for charge/discharge power and state of charge
+fig, ax1 = plt.subplots(figsize=(8, 4))
+ax1.plot(hours, p_charge, label='Charging Power', color='blue')
+ax1.plot(hours, p_discharge, label='Discharging Power', color='red')
+ax1.plot(hours, soc, label='State of Charge (SOC)', color='green')
+ax1.set_xlabel('Hour')
+ax1.set_ylabel('Power (kW)')
+ax1.legend(loc='upper right')
+
+
+plt.title('Charge/Discharge Power and State of Charge')
+plt.tight_layout()
 plt.show()

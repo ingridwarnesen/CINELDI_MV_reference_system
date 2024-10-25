@@ -27,7 +27,9 @@ import seaborn as sns
 # Location of (processed) data set for CINELDI MV reference system
 # (to be replaced by your own local data folder)
 #path_data_set         = 'C:/Users/ivespe/Data_sets/CINELDI_MV_reference_system/'
-path_data_set = "/Users/ingridwiig/Documents/NTNU/5. klasse/Modul3/CINELDI_MV_reference_system_v_2023-03-06/"
+#path_data_set = "/Users/ingridwiig/Documents/NTNU/5. klasse/Modul3/CINELDI_MV_reference_system_v_2023-03-06/"
+path_data_set = "C:/Users/haral/CINELDI_MV_reference_system_v_2023-03-06/"
+
 
 filename_load_data_fullpath = os.path.join(path_data_set,'load_data_CINELDI_MV_reference_system.csv')
 filename_load_mapping_fullpath = os.path.join(path_data_set,'mapping_loads_to_CINELDI_MV_reference_grid.csv')
@@ -106,3 +108,7 @@ plt.grid(True)
 plt.show()
 
 ### end task 2 ###
+
+### begin task 7 ###
+
+### end task 7 ###

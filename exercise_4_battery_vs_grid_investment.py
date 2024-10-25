@@ -84,26 +84,6 @@ P_max = load_time_series_subset_aggr.max()
 
 
 
-##### begin task 2 #####
-
-
-# Calculate peak load demand for each year over the 10-year planning horizon
-years = np.arange(0, 11)
-peak_loads = [P_max * (1 + 0.03) ** year for year in years]
-
-# Plot the peak load demand over the planning horizon
-plt.figure(figsize=(10, 6))
-plt.plot(years, peak_loads, marker='o', label='Annual peak load demand')
-plt.axhline(y=P_lim, color='r', linestyle='--', label='Power flow limit (P_lim)')
-plt.xlabel('Year')
-plt.ylabel('Peak load demand (MW)')
-plt.title('Peak load demand over the 10 year horizon with 3% annual growth')
-plt.legend()
-plt.grid(True)
-plt.show()
-
-### end task 2 ###
-
 #Task 3
 data_standard_overhead_lines = pd.read_csv(filename_standard_overhead_lines, delimiter=';')
 print(data_standard_overhead_lines.columns)
@@ -116,3 +96,4 @@ cost_per_km_new_line = data_standard_overhead_lines.loc[data_standard_overhead_l
 length_MF = 20
 investment_cost_new_line = cost_per_km_new_line * length_MF
 print(investment_cost_new_line)
+

@@ -26,6 +26,8 @@ import seaborn as sns
 # Location of (processed) data set for CINELDI MV reference system
 # (to be replaced by your own local data folder)
 path_data_set         = '/Users/andreamarie/Documents/Blokk 3 - fordypningsemne fleksibilitet /Oving 0/CINELDI_MV_reference_system_v_2023-03-06/'
+path_data_set = "/Users/ingridwiig/Documents/NTNU/5. klasse/Modul3/CINELDI_MV_reference_system_v_2023-03-06/"
+
 filename_load_data_fullpath = os.path.join(path_data_set,'load_data_CINELDI_MV_reference_system.csv')
 filename_load_mapping_fullpath = os.path.join(path_data_set,'mapping_loads_to_CINELDI_MV_reference_grid.csv')
 filename_standard_overhead_lines = os.path.join(path_data_set,'standard_overhead_line_types.csv')
@@ -82,6 +84,25 @@ load_time_series_subset = load_time_series_mapped[bus_i_subset] * scaling_factor
 load_time_series_subset_aggr = load_time_series_subset.sum(axis=1)
 P_max = load_time_series_subset_aggr.max()
 
+##### begin task 2 #####
+
+
+# Calculate peak load demand for each year over the 10-year planning horizon
+years = np.arange(0, 11)
+peak_loads = [P_max * (1 + 0.03) ** year for year in years]
+
+# Plot the peak load demand over the planning horizon
+plt.figure(figsize=(10, 6))
+plt.plot(years, peak_loads, marker='o', label='Annual peak load demand')
+plt.axhline(y=P_lim, color='r', linestyle='--', label='Power flow limit (P_lim)')
+plt.xlabel('Year')
+plt.ylabel('Peak load demand (MW)')
+plt.title('Peak load demand over the 10 year horizon with 3% annual growth')
+plt.legend()
+plt.grid(True)
+plt.show()
+
+### end task 2 ###
 
 
 #Task 3

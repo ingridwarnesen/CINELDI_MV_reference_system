@@ -21,7 +21,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
 
-
 # %% Define input data
 
 # Location of (processed) data set for CINELDI MV reference system
@@ -87,8 +86,6 @@ load_time_series_subset = load_time_series_mapped[bus_i_subset] * scaling_factor
 load_time_series_subset_aggr = load_time_series_subset.sum(axis=1)
 P_max = load_time_series_subset_aggr.max()
 
-
-
 ##### begin task 2 #####
 
 
@@ -109,6 +106,17 @@ plt.show()
 
 ### end task 2 ###
 
-### begin task 7 ###
 
-### end task 7 ###
+#Task 3
+data_standard_overhead_lines = pd.read_csv(filename_standard_overhead_lines, delimiter=';')
+print(data_standard_overhead_lines.columns)
+
+type_new_line = '111-AL1/19-ST1A (FeAl nr. 70 6/1) '
+
+cost_per_km_new_line = data_standard_overhead_lines.loc[data_standard_overhead_lines['type'] == type_new_line, 'cost_NOK_per_km'].values[0]
+
+#Length of line 85-86 (main feeder)
+length_MF = 20
+investment_cost_new_line = cost_per_km_new_line * length_MF
+print(investment_cost_new_line)
+

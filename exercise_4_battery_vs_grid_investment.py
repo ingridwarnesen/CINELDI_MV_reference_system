@@ -118,35 +118,6 @@ length_MF = 20
 investment_cost_new_line = cost_per_km_new_line * length_MF
 print(investment_cost_new_line)
 
-
-=======
-####begin task 6 ###
-
-
-#we need to implement a battery
-
-battery_power_capacity = 1 #MW
-battery_energy_capacity = 2 #MWh
-
-# Adjust peak load demand with BESS
-adjusted_peak_loads = []
-for peak_load in peak_loads:
-    adjusted_peak_load = peak_load - battery_power_capacity #subtract the power from the battery
-    adjusted_peak_loads.append(adjusted_peak_load)
-
-# Plot the adjusted peak load demand over the planning horizon
-plt.figure(figsize=(10, 6))
-#plt.plot(years, peak_loads, marker='o', label='Annual peak load demand')
-plt.step(years, adjusted_peak_loads, where='post', marker='o', label='Adjusted peak load demand with battery')
-plt.axhline(y=P_lim, color='r', linestyle='--', label='Power flow limit (P_lim)')
-plt.xlabel('Year')
-plt.ylabel('Peak load demand (MW)')
-plt.title('Peak load demand over the 10 year horizon with 3% annual growth and battery installed')
-plt.legend()
-plt.grid(True)
-plt.show()
-
-=======
 ####begin task 6 ###
 
 

@@ -120,3 +120,32 @@ length_MF = 20
 investment_cost_new_line = cost_per_km_new_line * length_MF
 print(investment_cost_new_line)
 
+###Task7###
+loadasList=load_time_series_subset_aggr.copy()
+loadYears=[]
+loadYears.append(loadasList.values.tolist())   #Load time series of the worst day for the fisrt year
+for i in years[1:]:
+    loadasList=loadasList*1.03                           #Adding the load time series for the next ten years with expected increase on demand
+    loadYears.append(loadasList.values.tolist())
+flexibilityCost=[]
+priceOfFlex=2000
+for yearlist in loadYears[:-1]:                            #The battery only has to operate the first nine years (until grid capacity is expanded)
+    flexYear=0
+    for i in range(len(yearlist)):
+        if(yearlist[i]>P_lim):
+            flexYear+=(yearlist[i]-P_lim)*priceOfFlex           #Price of using the battery times the amount needed during each hour
+    flexibilityCost.append(flexYear*20)                #for 20 days of the year
+
+print(flexibilityCost)
+#making list of load values
+###Endof Task 7 ###
+###Task  9###
+#Found average interuption cost to be 2.4 hrs, which is closer to 1h than 4h.
+#Using this for all years
+#avg_interuptionCost
+filtered_data_load_point = data_load_point.loc[bus_i_subset]
+total_c_NOK_per_kWh_1h = filtered_data_load_point['c_NOK_per_kWh_1h'].sum()
+print("Total c_NOK_per_kWh_1h for specified buses:", total_c_NOK_per_kWh_1h)
+
+
+###Task 14###

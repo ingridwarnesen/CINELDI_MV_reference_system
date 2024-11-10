@@ -99,17 +99,12 @@ multiplyBuses(bus_i_subset, scalingFactors)
 
 load_profiles = lp.load_profiles(filename_load_data_fullpath)
 
-
-
 # Get all the days of the year
 repr_days = list(range(1,366))
 
 # Get relative load profiles for representative days mapped to buses of the CINELDI test network;
 # the column index is the bus number (1-indexed) and the row index is the hour of the year (0-indexed)
 profiles_mapped = load_profiles.map_rel_load_profiles(filename_load_mapping_fullpath,repr_days)
-
-
-
 
 
 # Retrieve load time series for new load to be added to the area. this load profile is given from the costumer requesting 0.4 MW
@@ -128,7 +123,7 @@ print('Total load demand in the system assuming a peak load model: ' + str(net.r
 # %% Plot results of power flow calculations
 pp_plotting.pf_res_plotly(net)
 
-# Task 3
+# Task 3 ###
 # Extracting dataframe containing bus 90, 91, 92, 96
 load_dataframe_subset = load_time_series_mapped[bus_i_subset]
 listOfMaxes1=[]
@@ -145,6 +140,7 @@ plt.ylabel("Load demand (MW)")
 plt.title("Aggregated load demand for bus 90, 91, 92 and 96")
 plt.legend()
 plt.show()
+### end task 3 ###
 
 # Task 4
 # Find maximum value of P 
@@ -229,8 +225,9 @@ print(overloading)
 max_overloading = overloading.max()
 
 print(f"The maximum amount of overloading in the area after the new load is added is {max_overloading:.3f} MW.")
-
 ### task 9 end
+
+
 # # pp.runpp(net,init='results',algorithm='bfsw')
 # # #code for plotting
 # # pp_plotting.pf_res_plotly(net)

@@ -69,7 +69,6 @@ def soc_dynamics_rule(model, t):
 model.soc_dynamics = en.Constraint(model.T, rule=soc_dynamics_rule)
 
 
-
 #state of charge is set to zero at
 def final_soc_rule(model):
     return model.soc[23] == 0
@@ -90,7 +89,7 @@ def dicharging_SOC_rule(model, t):
     return model.p_discharge[t] <= model.soc[t] * model.discharging_power_limit
 model.dicharging_soc = en.Constraint(model.T, rule=dicharging_SOC_rule)
 
-# New rule for Excercise 6
+# New rule for Excercise 6, uncomment if you want the new rule to be implemented
 
 # def powerLimit_rule(model, t):
 #     return model.from_grid[t] <= P_lim
@@ -151,8 +150,9 @@ plt.ylabel('Power (kW)')
 plt.title('Charge/Discharge Power Schedule')
 plt.legend()
 plt.show()
-
 #### end of task 3### 
+
+##begin task 4
 # Plotting base load and power from grid in one plot to answer task 4
 plt.figure(figsize=(8, 4))  # Adjusted the width to 8 and height to 4
 plt.plot(hours, base_load, label='Base Load', color='blue')

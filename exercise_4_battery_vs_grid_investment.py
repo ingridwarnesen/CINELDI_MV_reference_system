@@ -87,8 +87,6 @@ load_time_series_subset_aggr = load_time_series_subset.sum(axis=1)
 P_max = load_time_series_subset_aggr.max()
 
 ##### begin task 2 #####
-
-
 # Calculate peak load demand for each year over the 10-year planning horizon
 years = np.arange(0, 11)
 peak_loads = [P_max * (1 + 0.03) ** year for year in years]
@@ -103,7 +101,6 @@ plt.title('Peak load demand over the 10 year horizon with 3% annual growth')
 plt.legend()
 plt.grid(True)
 plt.show()
-
 ### end task 2 ###
 
 
@@ -119,11 +116,10 @@ cost_per_km_new_line = data_standard_overhead_lines.loc[data_standard_overhead_l
 length_MF = 20
 investment_cost_new_line = cost_per_km_new_line * length_MF
 print(investment_cost_new_line)
+### end task 3 ###
 
 ####begin task 6 ###
-
-
-#we need to implement a battery
+#we need to implement a battery:
 
 battery_power_capacity = 1 #MW
 battery_energy_capacity = 2 #MWh

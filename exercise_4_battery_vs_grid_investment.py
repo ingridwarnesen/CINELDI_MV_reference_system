@@ -169,4 +169,3 @@ total_c_NOK_per_kWh_1h = filtered_data_load_point['c_NOK_per_kWh_1h'].sum()
 print("Total c_NOK_per_kWh_1h for specified buses:", total_c_NOK_per_kWh_1h)
 
 
-###Task 14###

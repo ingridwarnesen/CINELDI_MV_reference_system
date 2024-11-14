@@ -183,7 +183,7 @@ print(T_u)
 
 # Task 7
 
-##task 8 plot --------
+##task 8 plot 
 # Add new load to the existing load time series
 load_time_series_with_new_load = load_time_series_mapped.copy()
 load_time_series_with_new_load[bus_i_subset[0]] += new_load_time_series #her legges den nye load times serien (0.4 MW) med forbruksdate til bus 90 
